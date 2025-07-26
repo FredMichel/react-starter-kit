@@ -48,7 +48,31 @@ bun test         # Exécution des tests
 bun run lint     # Vérification code
 ```
 
-📖 **[Guide d'Installation Complet](SETUP.md)** - Instructions détaillées pour le développement
+### Commandes Cloudflare Infrastructure
+
+```bash
+# Développement local
+wrangler dev --local                    # Serveur Workers local
+
+# Déploiement
+wrangler deploy edge/dist/index.js      # Déploiement Workers
+wrangler deploy --env production        # Déploiement production
+
+# Base de données D1
+wrangler d1 list                        # Lister les bases
+wrangler d1 execute training-ai-agentic-db --command="SELECT 1"  # Test DB
+
+# Monitoring
+wrangler tail training-ai-agentic       # Logs en temps réel
+wrangler deployments list               # Historique déploiements
+
+# Storage R2
+wrangler r2 bucket list                 # Lister buckets R2
+wrangler r2 object list training-ai-agentic-images  # Lister objets
+```
+
+📖 **[Guide d'Installation Complet](SETUP.md)** - Instructions détaillées pour le développement  
+📖 **[Infrastructure Cloudflare](docs/cloudflare-infrastructure.md)** - Documentation complète infrastructure
 
 ## 📁 Structure du Projet
 

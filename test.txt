@@ -1,0 +1,1 @@
+Test image content for Cloudflare R2 bucket verification

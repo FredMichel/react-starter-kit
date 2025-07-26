@@ -23,6 +23,45 @@ Cette plateforme interactive permet aux stagiaires de naviguer facilement entre 
 - **Tests**: Vitest + Happy DOM
 - **Style**: Tailwind CSS v4 avec support mode sombre/clair
 
+## 🚀 Démarrage Rapide
+
+```bash
+# 1. Cloner le projet
+git clone https://github.com/FredMichel/react-starter-kit.git
+cd react-starter-kit
+
+# 2. Installer les dépendances
+bun install
+
+# 3. Démarrer le serveur de développement
+bun dev
+```
+
+Ouvrir [http://localhost:5173](http://localhost:5173) dans votre navigateur.
+
+### Commandes Principales
+
+```bash
+bun dev          # Serveur de développement
+bun run build    # Construction production
+bun test         # Exécution des tests
+bun run lint     # Vérification code
+```
+
+📖 **[Guide d'Installation Complet](SETUP.md)** - Instructions détaillées pour le développement
+
+## 📁 Structure du Projet
+
+```
+react-starter-kit/
+├── app/         # Frontend React (TanStack Router, Tailwind CSS)
+├── api/         # Backend tRPC + Hono
+├── edge/        # Cloudflare Workers
+├── db/          # Schemas database + Drizzle ORM
+├── core/        # Utilitaires partagés
+└── docs/        # Documentation
+```
+
 <a href="https://reactstarter.com/s/1"><img src="https://reactstarter.com/s/1.png" height="60" /></a>&nbsp;&nbsp;<a href="https://reactstarter.com/s/2"><img src="https://reactstarter.com/s/2.png" height="60" /></a>&nbsp;&nbsp;<a href="https://reactstarter.com/s/3"><img src="https://reactstarter.com/s/3.png" height="60" /></a>
 
 ---

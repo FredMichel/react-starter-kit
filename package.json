@@ -1,6 +1,12 @@
 {
-  "name": "root",
-  "version": "0.0.0",
+  "name": "training-ai-agentic-web",
+  "version": "1.0.0",
+  "description": "Site web interactif pour formation IA Agentique - ib Cegos IA102",
+  "author": "Formation IA Agentique Team",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FredMichel/react-starter-kit.git"
+  },
   "packageManager": "bun@1.2.19",
   "private": true,
   "type": "module",

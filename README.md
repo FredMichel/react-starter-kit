@@ -1,22 +1,27 @@
-# React Starter Kit
+# Formation IA Agentique - Plateforme Web Interactive
 
-<a href="https://github.com/kriasoft/react-starter-kit?sponsor=1"><img src="https://img.shields.io/badge/-GitHub-%23555.svg?logo=github-sponsors" height="20"></a>
-<a href="https://discord.gg/2nKEnKq"><img src="https://img.shields.io/discord/643523529131950086?label=Chat" height="20"></a>
-<a href="https://github.com/kriasoft/react-starter-kit/stargazers"><img src="https://img.shields.io/github/stars/kriasoft/react-starter-kit.svg?style=social&label=Star&maxAge=3600" height="20"></a>
-<a href="https://twitter.com/koistya"><img src="https://img.shields.io/twitter/follow/koistya.svg?style=social&label=Follow&maxAge=3600" height="20"></a>
+Site web de présentation pour le cours de formation "IA Agentique" - ib Cegos IA102.
 
-Building modern web applications shouldn't require weeks of configuration hell. This React Starter Kit eliminates the tedious setup work so you can focus on what matters: shipping great products.
+Cette plateforme interactive permet aux stagiaires de naviguer facilement entre les modules de formation, de suivre leur progression et d'exporter leurs supports personnalisés.
 
-Designed for developers who value both speed and quality, this template provides a complete foundation for full-stack applications. From solo projects to team collaborations, it scales with your ambitions while maintaining the developer experience you deserve.
+## 🎯 Objectifs du Projet
 
-## What You Get
+- Présentation interactive du contenu de formation IA Agentique
+- Navigation fluide entre 6 modules de formation
+- Suivi de progression personnalisé pour chaque stagiaire
+- Export PDF personnalisé avec nom et prénom du stagiaire
+- Interface moderne et sobre avec support mode sombre/clair
+- Mode plein écran pour une lecture optimisée
 
-- **Performance by Default**: Bun runtime delivers exceptional speed across development and production. Your build times will thank you.
-- **Type Safety Throughout**: TypeScript and tRPC create an unbreakable contract between frontend and backend. Catch errors at compile time, not in production.
-- **Modern React Stack**: React 19 with TanStack Router provides type-safe navigation and powerful data fetching patterns. Tailwind CSS v4 handles styling with zero configuration.
-- **Edge-Native Deployment**: Cloudflare Workers ensure your app runs close to users worldwide. Experience sub-100ms response times globally.
-- **Database Ready**: Drizzle ORM with Cloudflare D1 provides a complete data layer. Multi-tenant support included out of the box.
-- **Developer Experience**: ESLint, Prettier, and VSCode configurations eliminate bikeshedding. Focus on features, not formatting.
+## 🛠️ Stack Technique
+
+- **Runtime**: Bun (>=1.2.0) pour des performances optimales
+- **Frontend**: React 19 + TanStack Router + Tailwind CSS v4
+- **Backend**: tRPC + Hono framework
+- **Base de données**: Cloudflare D1 (SQLite) + Drizzle ORM
+- **Déploiement**: Cloudflare Workers (edge computing)
+- **Tests**: Vitest + Happy DOM
+- **Style**: Tailwind CSS v4 avec support mode sombre/clair
 
 <a href="https://reactstarter.com/s/1"><img src="https://reactstarter.com/s/1.png" height="60" /></a>&nbsp;&nbsp;<a href="https://reactstarter.com/s/2"><img src="https://reactstarter.com/s/2.png" height="60" /></a>&nbsp;&nbsp;<a href="https://reactstarter.com/s/3"><img src="https://reactstarter.com/s/3.png" height="60" /></a>
 

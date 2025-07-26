@@ -19,11 +19,12 @@ This document provides comprehensive documentation for the Cloudflare infrastruc
 - **Type**: SQLite edge database
 - **Migrations Directory**: `./db/migrations`
 
-### 3. Cloudflare R2 Storage
+### 3. Google Cloud Storage (GCS)
 - **Bucket Name**: `training-ai-agentic-images`
-- **Binding Name**: `IMAGES`
-- **Purpose**: Image and asset storage
-- **Status**: Pending R2 service enablement
+- **Project ID**: `training-ai-agentic`
+- **Service Account**: `cloudflare-worker-storage@training-ai-agentic.iam.gserviceaccount.com`
+- **Purpose**: Image and asset storage (replaced Cloudflare R2)
+- **Status**: Pending GCP project setup
 
 ### 4. Static Assets
 - **Source Directory**: `./app/dist`
@@ -70,12 +71,10 @@ This document provides comprehensive documentation for the Cloudflare infrastruc
       "custom_domain": true
     }
   ],
-  "r2_buckets": [
-    {
-      "binding": "IMAGES",
-      "bucket_name": "training-ai-agentic-images"
-    }
-  ],
+  "vars": {
+    "GCP_PROJECT_ID": "training-ai-agentic",
+    "GCP_BUCKET_NAME": "training-ai-agentic-images"
+  },
   "d1_databases": [
     {
       "binding": "DB",
@@ -131,21 +130,30 @@ wrangler d1 execute training-ai-agentic-db --command=".schema"
 wrangler d1 migrations apply training-ai-agentic-db
 ```
 
-### R2 Storage Setup
+### Google Cloud Storage Setup
 
-#### 1. Enable R2 Service
-- Visit: https://dash.cloudflare.com/313d11072ad5982f8bfbd8914be2ce6b/r2
-- Enable R2 service in Cloudflare Dashboard
-
-#### 2. Create R2 Bucket
+#### 1. Setup GCP Project
 ```bash
-wrangler r2 bucket create training-ai-agentic-images
+# Install Google Cloud SDK
+curl https://sdk.cloud.google.com | bash
+gcloud auth login
+gcloud config set project training-ai-agentic
 ```
 
-#### 3. Verify Bucket Creation
+#### 2. Create GCS Bucket
 ```bash
-wrangler r2 bucket list
-# Should show: training-ai-agentic-images
+gsutil mb gs://training-ai-agentic-images
+gsutil lifecycle set lifecycle.json gs://training-ai-agentic-images
+```
+
+#### 3. Setup Service Account
+```bash
+gcloud iam service-accounts create cloudflare-worker-storage
+gcloud projects add-iam-policy-binding training-ai-agentic \
+  --member="serviceAccount:cloudflare-worker-storage@training-ai-agentic.iam.gserviceaccount.com" \
+  --role="roles/storage.objectAdmin"
+gcloud iam service-accounts keys create gcp-service-key.json \
+  --iam-account=cloudflare-worker-storage@training-ai-agentic.iam.gserviceaccount.com
 ```
 
 ## Deployment Procedures
@@ -161,7 +169,7 @@ wrangler deploy edge/dist/index.js --env=""
 
 ### Production Deployment
 ```bash
-# Note: Requires R2 service to be enabled
+# Note: Requires GCP project and service account setup
 wrangler deploy --env production
 ```
 
@@ -216,7 +224,8 @@ wrangler versions list
 - `DB`: D1 database binding (automatically configured)
 
 ### Storage Variables
-- `IMAGES`: R2 bucket binding (when R2 is enabled)
+- `GCP_PROJECT_ID`: Google Cloud Project ID
+- `GCP_BUCKET_NAME`: Google Cloud Storage bucket name
 - `ASSETS`: Static assets binding (automatically configured)
 
 ## Security Considerations
@@ -240,21 +249,24 @@ wrangler versions list
 ```bash
 # Set production secrets
 wrangler secret put OPENAI_API_KEY --env production
+wrangler secret put GCP_SERVICE_ACCOUNT_KEY --env production
 
 # Set development secrets
 wrangler secret put OPENAI_API_KEY --env development
+wrangler secret put GCP_SERVICE_ACCOUNT_KEY --env development
 ```
 
 ## Troubleshooting
 
 ### Common Issues
 
-#### 1. R2 Bucket Not Found
-**Error**: `R2 bucket 'training-ai-agentic-images' not found`
+#### 1. GCS Bucket Access Issues
+**Error**: `Google Cloud Storage bucket access denied`
 **Solution**: 
-1. Enable R2 service in Cloudflare Dashboard
-2. Create the bucket: `wrangler r2 bucket create training-ai-agentic-images`
-3. Verify: `wrangler r2 bucket list`
+1. Verify GCP project setup: `gcloud config get-value project`
+2. Check service account permissions: `gcloud projects get-iam-policy training-ai-agentic`
+3. Regenerate service account key if needed
+4. Verify bucket exists: `gsutil ls gs://training-ai-agentic-images`
 
 #### 2. Workers.dev Subdomain Required
 **Error**: `You need to register a workers.dev subdomain`
@@ -295,6 +307,11 @@ wrangler deployments list
 
 # View Worker bindings
 wrangler deploy --dry-run
+
+# GCP debugging commands
+gcloud auth list
+gcloud config list
+gsutil ls gs://training-ai-agentic-images
 ```
 
 ## Performance Optimization
@@ -325,7 +342,7 @@ wrangler deploy --dry-run
 ### Backup Procedures
 - D1 databases are automatically backed up by Cloudflare
 - Export critical data regularly: `wrangler d1 export training-ai-agentic-db`
-- Store R2 backups in separate bucket if needed
+- Store GCS backups in separate bucket or region if needed
 
 ### Updates and Migrations
 1. Test all changes in development environment first
@@ -338,7 +355,7 @@ wrangler deploy --dry-run
 ### Resource Limits
 - **Workers**: 100,000 requests/day (free tier)
 - **D1**: 5 million row reads/day (free tier)
-- **R2**: 10GB storage (free tier)
+- **GCS**: 5GB storage (free tier), pay-per-use beyond
 
 ### Cost Optimization
 - Use appropriate caching strategies
@@ -350,8 +367,9 @@ wrangler deploy --dry-run
 ### Documentation Links
 - [Cloudflare Workers](https://developers.cloudflare.com/workers/)
 - [Cloudflare D1](https://developers.cloudflare.com/d1/)
-- [Cloudflare R2](https://developers.cloudflare.com/r2/)
+- [Google Cloud Storage](https://cloud.google.com/storage/docs)
 - [Wrangler CLI](https://developers.cloudflare.com/workers/wrangler/)
+- [Google Cloud SDK](https://cloud.google.com/sdk/docs)
 
 ### Getting Help
 - Cloudflare Community: https://community.cloudflare.com/

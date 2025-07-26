@@ -66,9 +66,9 @@ wrangler d1 execute training-ai-agentic-db --command="SELECT 1"  # Test DB
 wrangler tail training-ai-agentic       # Logs en temps réel
 wrangler deployments list               # Historique déploiements
 
-# Storage R2
-wrangler r2 bucket list                 # Lister buckets R2
-wrangler r2 object list training-ai-agentic-images  # Lister objets
+# Storage GCP
+gsutil ls gs://training-ai-agentic-images  # Lister objets GCS
+gcloud storage ls                       # Lister buckets GCS
 ```
 
 📖 **[Guide d'Installation Complet](SETUP.md)** - Instructions détaillées pour le développement  
